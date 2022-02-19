@@ -1,0 +1,71 @@
+name: Automated Code Review
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+      - master
+  push:
+    paths: 
+      - '**.yml'     
+      - '**.htm'
+      - '**.html'
+      - '**.js'
+      - '**.css'
+
+jobs:
+  automated-code-review:    
+    name: Automated Code Review
+    runs-on: ubuntu-latest
+    steps:
+      #- name: Dump GitHub context
+      #  id: github_context_step
+      #  run: echo '${{ toJSON(github) }}'
+      
+      - name: Get branch name (merge)
+        if: github.event_name != 'pull_request'
+        shell: bash
+        run: echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_ENV
+
+      - name: Get branch name (pull request)
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: echo "BRANCH_NAME=$(echo ${GITHUB_HEAD_REF})" >> $GITHUB_ENV
+
+      - name: Perform Automated Code Review
+        shell: bash
+        run: |
+          curlResult=$(curl --request GET \
+            --url 'https://atlassystemscodereviewfunction.azurewebsites.net/api/AutomatedCodeReview' \
+            -G --data-urlencode "gitRepo=${{ github.event.repository.clone_url }}" \
+            -G --data-urlencode "gitBranch=${{ env.BRANCH_NAME }}")
+          
+            acrResult=$(echo $curlResult | head -n 1| cut -d $' ' -f2)
+            echo "ACR_RESULT=$(echo $acrResult)" >> $GITHUB_ENV
+            
+      - uses: mshick/add-pr-comment@v1
+        name: PR Comment
+        if: github.event_name == 'pull_request'
+        with:
+          message: |
+            Our team will review the pull requst as soon as possible. In the interim, our automated code review performed an initial scan.
+
+            * Critical Issues: ${{fromJson(env.ACR_RESULT).criticalIssueCount}}
+            * Warnings: ${{fromJson(env.ACR_RESULT).warningIssueCount}}
+            * Suggestions: ${{fromJson(env.ACR_RESULT).warningIssueCount}}
+            * Manual Security Review: ${{fromJson(env.ACR_RESULT).manualReviewIssueCount}}
+
+            View details at ${{fromJson(env.ACR_RESULT).reportUrl}}
+
+            **Watch for notifications** as we may request some changes to make sure this meets guidelines.
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token-user-login: 'github-actions[bot]' # The user.login for temporary GitHub tokens
+          allow-repeats: false # This is the default
+
+      - name: Fail if Critical Issues Detected
+        if: ${{ fromJson(env.ACR_RESULT).criticalIssueCount > 0 }}
+        uses: actions/github-script@v6
+        with:
+          script: |
+              core.setFailed('Critical Issues Detected. Details at ${{fromJson(env.ACR_RESULT).reportUrl}}')
