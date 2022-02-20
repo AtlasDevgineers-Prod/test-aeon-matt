@@ -18,4 +18,4 @@ jobs:
     name: Automated Code Review
     runs-on: ubuntu-latest
     steps:
-      - uses: ./.github/workflows/securityReview.yml
+      - uses: AtlasDevgineers-Prod/.github/.github/workflow-templates/securityReview.yml@main
