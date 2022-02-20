@@ -56,7 +56,7 @@ jobs:
 
             * Critical Issues: ${{fromJson(env.ACR_RESULT).criticalIssueCount}}
             * Warnings: ${{fromJson(env.ACR_RESULT).warningIssueCount}}
-            * Suggestions: ${{fromJson(env.ACR_RESULT).warningIssueCount}}
+            * Suggestions: ${{fromJson(env.ACR_RESULT).suggestionIssueCount}}
             * Manual Security Review: ${{fromJson(env.ACR_RESULT).manualReviewIssueCount}}
 
             View details at ${{fromJson(env.ACR_RESULT).reportUrl}}
