@@ -1,21 +1,25 @@
-# This is a basic workflow to help you get started with Actions
-
 name: Automated Code Review
 
 # Controls when the workflow will run
-on:
-  # Triggers the workflow on push or pull request events but only for the main branch
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
-  # Allows you to run this workflow manually from the Actions tab
+on:  
+  # Allows you to run this workflow manually from the Actions tab  
   workflow_dispatch:
-
+  # Triggers the workflow on pull request events but only for the main branch
+  pull_request_target:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  # Triggers the workflow on push events for web files or if workflow is changed
+  push:
+    paths:     
+      - '**.yml'     
+      - '**.htm'
+      - '**.html'
+      - '**.js'
+      - '**.css'
 jobs:
   automtedCodeReview:
     name: Automated Code Review
-    runs-on: ubuntu-latest
-    steps:
-      - uses: AtlasDevgineers-Prod/.github/.github/workflows/securityReview.yml@main
+    uses: AtlasDevgineers-Prod/.github/.github/workflows/securityReview.yml@main
