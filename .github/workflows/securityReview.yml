@@ -8,9 +8,7 @@ on:
   pull_request_target:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
+
   # Triggers the workflow on push events for web files or if workflow is changed
   push:
     paths:     
