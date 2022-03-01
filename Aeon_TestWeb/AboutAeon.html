@@ -7,12 +7,24 @@
 <body>
     <#INCLUDE filename="include_header.html">
     <#INCLUDE filename="include_menu.html" restriction="IsValidSession">
+
+    
+    <img data-codereview="Img should contain an alt for accessibility" data-src="https://images.squarespace-cdn.com/content/v1/5f6b47adec0c054e23fea9c9/1643820804883-SJ4OGNV6XPRGLSBEPKUN/Atlas_Logo_Diamond.png" 
+         data-image="https://images.squarespace-cdn.com/content/v1/5f6b47adec0c054e23fea9c9/1643820804883-SJ4OGNV6XPRGLSBEPKUN/Atlas_Logo_Diamond.png" 
+         data-image-dimensions="809x809" data-image-focal-point="0.5,0.5" data-load="false" class="summary-thumbnail-image loaded" 
+         data-parent-ratio="1.0" style="left: 0px; top: 0px; width: 384px; height: 384px; position: absolute;"
+         data-image-resolution="750w" src="https://images.squarespace-cdn.com/content/v1/5f6b47adec0c054e23fea9c9/1643820804883-SJ4OGNV6XPRGLSBEPKUN/Atlas_Logo_Diamond.png?format=750w">
+        
     <div class="container">
         <main id="content" aria-label="Content">
        
             <div class="mt-5 mb-3">Aeon is special collections circulation and workflow automation software for special collections libraries designed by special collections librarians.</div>
             <div class="mt-3 mb-5">Aeon improves customer service and staff efficiency while providing unparalleled item tracking, security, and statistics.</div>
-
+            <div id="content">A duplicate ID is here which should get a warning</div>
+            <script>
+                /* When not pre-approved, this script should be flagged for manual review */
+                let x = "123"
+            </script>
         </main>
         
         <#INCLUDE filename="include_footer.html">
