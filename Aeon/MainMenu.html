@@ -18,6 +18,7 @@
         <main id="content" aria-label="Content">
             <#TAGCLOUD>
             <h2>Outstanding Requests</h2>
+                <p>This is where all of your outstanding requests live</p>
             <#DATAREPEATER name="ViewOutstandingRequests" TemplateFile="templates/DataRow_DefaultRequest.html" noDataAction="You have no outstanding requests" orderby="TransactionNumber DESC">
         </main>
         <#INCLUDE filename="include_footer.html">
